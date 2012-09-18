@@ -1,0 +1,185 @@
+$grid-gutter: 5px
+$grid-width: 50px
+
+@function grid-width($cols, $marginless: true)
+  @if $marginless
+    @return $grid-width * $cols
+  @else
+    @return ($grid-width - $grid-gutter) * $cols
+
+@function grid-width-sub($cols, $marginless, $subtract)
+  @if $cols != -1
+    @if $marginless
+      @return $grid-width * $cols - $subtract
+    @else
+      @return ($grid-width - $grid-gutter) * $cols
+  @else
+    @return -1
+
+
+// Sizes the element to a given number of columns. 1 column = 50px.
+// (configurable via the $grid-width variable)
+//
+// When calling, it is easiest to specify parameters by name.
+// e.g. +column($full: 5, $wide: 7, $subtract: 3px)
+// Otherwise, things might not work as expected if you don't pass in every single optional parameter
+// 
+// We accomodate four screen sizes. Specifying $full is mandatory.
+// All other sizes are optional and default to $full.
+//    $full: The number of columns to take up in default view (1024-1350px)
+//    $wide: The number of columns for wide view (> 1350px)
+//    $ipad-landscape: 768–1024px 
+//    $ipad-portrait: < 768px
+//  
+// $subtract: 
+//  A number of pixels to subtract from the absolute final width. 
+//  This is useful to accomodate the fact that adding a n-px border to a parent elem
+//  will cause that element to have 2n less pixels available to hold children
+//  (remember, we're using +box-sizing(border-box))
+//
+// $marginless:
+//  If false, a 5px margin-left will be applied to the element. 
+//  (configurable via $grid-gutter)
+@mixin column($full: 1, $wide: 1, $ipad-landscape: -1, $ipad-portrait: -1, $subtract: 0, $marginless: true, $table: false)
+  +box-sizing(border-box)
+  //display: inline-block
+  @if not $table
+    float: left
+
+  @if not $marginless
+    margin-left: $grid-gutter
+
+  +responsive($property: width, $wide: grid-width-sub($full, $marginless, $subtract), $full: grid-width-sub($full, $marginless, $subtract), $ipad-landscape: grid-width-sub($ipad-landscape, $marginless, $subtract), $ipad-portrait: grid-width-sub($ipad-portrait, $marginless, $subtract))
+
+@mixin responsive($property: width, $wide: -1, $full: -1, $ipad-landscape: -1, $ipad-portrait: -1)
+  width: $full
+
+  @if $ipad-landscape != -1
+    @media only screen and (min-width: 1000px) and (max-width:1150px)
+      width: $ipad-landscape
+
+  @if $ipad-portrait != -1
+    @media only screen and (max-width : 1000px)
+      width: $ipad-portrait
+
+
+@mixin responsive-width($full: -1, $wide: -1, $ipad-landscape: -1, $ipad-portrait: -1, $subtract: 0)
+  +column($full, $wide, $ipad-landscape, $ipad-portrait, $subtract, true, true)
+
+
+// This mixin defines a column that takes up the entire width of the page
+// Its defaults are set to the default page widths, so it serves as shorthand.
+// NOTE: All measurements are in number of columns, except subtract which is measured in pixels
+@mixin full-width-column($full: 19, $wide: 19, $ipad-landscape: 18, $ipad-portrait: 13, $subtract: 0)
+  +column($full, $wide, $ipad-landscape, $ipad-portrait, $subtract)
+  display: block
+
+// Adds whitespace after a given element
+// The same rules apply as +column for size declaractions
+// $type: Where the space is added. Either 'margin' or 'padding'
+@mixin after($full: 1, $wide: -1, $ipad-landscape: -1, $ipad-portrait: -1, $type: 'margin')
+  #{$type}-right: grid-width($full, true)
+
+  @if $ipad-landscape != -1
+    @media only screen and (min-width : 1000px) and (max-width: 1150px)
+      #{$type}-right: grid-width($ipad-landscape, true)
+  @if $ipad-portrait != -1
+    @media only screen and (max-width : 1000px)
+      #{$type}-right: grid-width($ipad-portrait, true)
+
+// Adds whitespace before a given element.
+@mixin before($full: 1, $wide: -1, $ipad-landscape: -1, $ipad-portrait: -1, $marginless: true, $type: 'margin')
+  $margin: 0
+  +before-helper($full, $marginless, $type)
+
+  @if $ipad-landscape != -1
+    @media only screen and (min-width : 1000px) and (max-width: 1150px)
+      +before-helper($ipad-landscape, $marginless, $type)
+  @if $ipad-portrait != -1
+    @media only screen and (max-width : 1000px)
+      +before-helper($ipad-portrait, $marginless, $type)
+
+  // Edge cases!
+  @if not $marginless
+    @if $ipad-landscape == 0
+      @media only screen and (min-width : 1000px) and (max-width: 1150px)
+        #{$type}-left: $grid-width * $ipad-landscape
+    @if $ipad-portrait == 0
+      @media only screen and (max-width : 1000px)
+        #{$type}-left: $grid-width * $ipad-portrait
+
+@mixin before-helper($cols, $marginless, $type)
+  $width: grid-width($cols, $marginless)
+  @if $marginless
+    #{$type}-left: $width
+  @else
+    @if $type == 'margin'
+      margin-left: $width + $grid-gutter
+    @else if $type == 'padding'
+      margin-left: $grid-gutter
+      padding-left: $width
+
+// This mixin handles positioning something as fixed on the right-hand side of the wrapper.
+// If we ever want something to be position: fixed in a different location, work will be needed.
+// The $parent family of variables refer to the size of the wrapper div.
+@mixin fixed-column($full: 1, $wide: -1, $ipad-landscape: -1, $ipad-portrait: -1, $parent-wide: 19, $parent-full: 19, $parent-ipad-landscape: 18, $parent-ipad-portrait: 13, $full-column: 0, $wide-column: -1, $ipad-landscape-column: -1, $ipad-portrait-column: -1, $subtract: -1)
+  box-sizing: content-box
+  position: fixed
+  left: 50%
+  margin-left: 0
+  margin-right: 0
+
+  width: grid-width-sub($full, true, $subtract)
+  margin-left: grid-width($full-column, true) - grid-width($parent-full, true) / 2
+
+  // @media only screen and (min-width: 1150px)
+  //   @if $wide == -1
+  //     $wide: $full
+  //   @if $wide-column == -1
+  //     $wide-column: $full-column 
+
+  //   width: grid-width($wide, true)
+  //   margin-left: grid-width($wide-column, true) - grid-width($parent-wide, true) / 2
+
+  @media only screen and (min-width : 1000px) and (max-width: 1150px)
+    @if $ipad-landscape == -1
+      $ipad-landscape: $full
+
+    @if $ipad-landscape-column == -1
+      $ipad-landscape-column: $full-column
+
+    width: grid-width-sub($ipad-landscape, true, $subtract)
+    margin-left: grid-width($ipad-landscape-column, true) - grid-width($parent-ipad-landscape, true) / 2
+
+  @media only screen and (max-width : 1000px)
+    @if $ipad-portrait == -1
+      $ipad-portrait: $ipad-landscape
+    @if $ipad-portrait-column == -1
+      $ipad-portrait-column: $ipad-landscape-column 
+
+    width: grid-width-sub($ipad-portrait, true, $subtract)
+    margin-left: grid-width($ipad-portrait-column, true) - grid-width($parent-ipad-portrait, true) / 2
+
+// Old mixins left in for legacy support until everything gets updated
+@mixin marginless-column($col-num: 1, $ipad-landscape-col: -1, $ipad-portrait-col: -1)
+  +column($full: $col-num, $ipad-landscape: $ipad-landscape-col, $ipad-portrait: $ipad-portrait-col)
+
+@mixin marginless-before($col-num: 1, $ipad-landscape-col: -1, $ipad-portrait-col: -1)
+  +before($full: $col-num, $ipad-landscape: $ipad-landscape-col, $ipad-portrait: $ipad-portrait-col)
+
+@mixin focus-mode-columns($wide-view: 1, $normal: -1, $ipad-landscape-col: -1, $ipad-portrait-col: -1)
+  +column($wide: $normal, $full: $normal, $ipad-landscape: $ipad-landscape-col, $ipad-portrait: $ipad-portrait-col)
+
+@mixin focus-mode-padding($wide-view: 1, $normal: -1, $ipad-landscape-col: -1, $ipad-portrait-col: -1)
+  +before($type: 'padding', $wide: $normal, $full: $normal, $ipad-landscape: $ipad-landscape-col, $ipad-portrait: $ipad-portrait-col)
+  +after($type: 'padding', $wide: $normal, $full: $normal, $ipad-landscape: $ipad-landscape-col, $ipad-portrait: $ipad-portrait-col)
+
+@mixin focus-mode-wrapper($wide-view: 1, $normal: -1, $ipad-landscape-col: -1, $ipad-portrait-col: -1)
+  // *only* sets (marginless) width, nothing else
+  +column($wide: $normal, $full: $normal, $ipad-landscape: $ipad-landscape-col, $ipad-portrait: $ipad-portrait-col)
+
+@mixin block($align: middle)
+  float: none
+  display: inline-block
+  vertical-align: $align
+

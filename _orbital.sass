@@ -82,11 +82,6 @@ $grid-width: 50px
     @media only screen and (max-width : 1000px)
       width: $ipad-portrait
 
-
-@mixin responsive-width($full: -1, $wide: -1, $ipad-landscape: -1, $ipad-portrait: -1, $subtract: 0)
-  +column($full, $wide, $ipad-landscape, $ipad-portrait, $subtract, true, true)
-
-
 // This mixin defines a column that takes up the entire width of the page
 // Its defaults are set to the default page widths, so it serves as shorthand.
 // NOTE: All measurements are in number of columns, except subtract which is measured in pixels
@@ -179,27 +174,4 @@ $grid-width: 50px
 
     width: grid-width-sub($ipad-portrait, true, $subtract)
     margin-left: grid-width($ipad-portrait-column, true) - grid-width($parent-ipad-portrait, true) / 2
-
-// Old mixins left in for legacy support until everything gets updated
-@mixin marginless-column($col-num: 1, $ipad-landscape-col: -1, $ipad-portrait-col: -1)
-  +column($full: $col-num, $ipad-landscape: $ipad-landscape-col, $ipad-portrait: $ipad-portrait-col)
-
-@mixin marginless-before($col-num: 1, $ipad-landscape-col: -1, $ipad-portrait-col: -1)
-  +before($full: $col-num, $ipad-landscape: $ipad-landscape-col, $ipad-portrait: $ipad-portrait-col)
-
-@mixin focus-mode-columns($wide-view: 1, $normal: -1, $ipad-landscape-col: -1, $ipad-portrait-col: -1)
-  +column($wide: $normal, $full: $normal, $ipad-landscape: $ipad-landscape-col, $ipad-portrait: $ipad-portrait-col)
-
-@mixin focus-mode-padding($wide-view: 1, $normal: -1, $ipad-landscape-col: -1, $ipad-portrait-col: -1)
-  +before($type: 'padding', $wide: $normal, $full: $normal, $ipad-landscape: $ipad-landscape-col, $ipad-portrait: $ipad-portrait-col)
-  +after($type: 'padding', $wide: $normal, $full: $normal, $ipad-landscape: $ipad-landscape-col, $ipad-portrait: $ipad-portrait-col)
-
-@mixin focus-mode-wrapper($wide-view: 1, $normal: -1, $ipad-landscape-col: -1, $ipad-portrait-col: -1)
-  // *only* sets (marginless) width, nothing else
-  +column($wide: $normal, $full: $normal, $ipad-landscape: $ipad-landscape-col, $ipad-portrait: $ipad-portrait-col)
-
-@mixin block($align: middle)
-  float: none
-  display: inline-block
-  vertical-align: $align
 

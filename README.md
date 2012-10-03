@@ -43,7 +43,7 @@ You must include a value for `$full`. Other than that, all sizes are optional an
   * `$ipad-portrait`: Number of columns for < 1000px
   * `$subtract`: A number of pixels to subtract from the absolute final width. Because all columns are using box-sizing: border-box, adding an n-pixel border to an element will cause its internal contents to have 2*n less pixels, which means that children whose column sizes add up to the same as the parent element won't actually fit. By using $subtract to shrink the children elements by as many pixels are added by the presence of a border, you can make everything fit.
   * `$marginless`: By default, grid columns do not contain a gutter. If `$marginless` is set to false, a five-pixel gutter will be applied as a left margin.
-  * `$table`: Set this to true if the elements being sized are part of an HTML table. By default, columns are arranged horizontally by making them all float:left. If the columns are part of a table, this isn't acceptable.
+  * `$table`: Set this to true if the elements being sized are part of an HTML table. By default, columns are arranged horizontally by making them all float:left. If the columns are part of a table, this isn't acceptable, so we need to accomodate.
 
 
 **full-width-column**
@@ -56,7 +56,7 @@ This is a shorthand function to make an element span the entire width of the pag
 
 **before**
 ```
-+before($full, $wide, $tablet-landscape, $tablet-portrait, $phone-landscape, $phone-portrait, $type: 'margin')
++before($full, $wide, $ipad-landscape, $ipad-portrait, $type: 'margin')
 ```
 
 Adds the given number of columns as whitespace before an element. By default, the whitespace will be added as a margin, but this can be changed to padding by passing in 'padding' for the $type variable
@@ -64,7 +64,7 @@ Adds the given number of columns as whitespace before an element. By default, th
 
 **after**
 ```
-+after($full, $wide, $tablet-landscape, $tablet-portrait, $phone-landscape, $phone-portrait, $type: 'margin')
++after($full, $wide, $ipad-landscape, $ipad-portrait, $type: 'margin')
 ```
 
 Adds the given number of columns as whitespace after an element. As with `+before()`, the whitespace is added as a margin but can be made to use padding.

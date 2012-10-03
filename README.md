@@ -31,7 +31,7 @@ From there, you can access any of its functionality via mixins.
 ## API Reference
 **column** 
 ```
-+column($full, $wide, $tablet-landscape, $tablet-portrait, $phone-landscape, $phone-portrait, $subtract, $marginless: true, $table)
++column($full, $wide, $ipad-landscape, $ipad-portrait, $subtract, $marginless: true, $table)
 ```
 Sizes the element to a given number of 50px columns.
 

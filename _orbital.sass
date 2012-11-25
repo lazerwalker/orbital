@@ -38,19 +38,19 @@ $iphone-landscape-min: 450px
     @content
 
 =full
-  @media only screen and (min-width: $full-min) and (max-width: $wide-min)
+  @media only screen and (max-width: $wide-min)
     @content
 
 =ipad-landscape
-  @media only screen and (min-width: $ipad-landscape-min) and (max-width: $full-min)
+  @media only screen and (max-width: $full-min)
     @content
 
 =ipad-portrait
-  @media only screen and (min-width: $ipad-portrait-min) and (max-width: $ipad-landscape-min)
+  @media only screen and (max-width: $ipad-landscape-min)
     @content
 
 =iphone-landscape
-  @media only screen and (min-width: $iphone-landscape-min) and (max-width: $ipad-portrait-min)
+  @media only screen and (max-width: $ipad-portrait-min)
     @content
 
 =iphone-portrait

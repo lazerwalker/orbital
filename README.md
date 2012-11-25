@@ -16,6 +16,8 @@ To do this, Orbital defines a number of different breakpoints ('orbitals', if yo
 
 When you define an element's width in CSS, you can specify how many columns it should occupy in each of these four sizes, and the elements will resize themselves as appropriate thanks to CSS media queries.
 
+Element widths do cascade. That is to say, if you set a number of columns for a given element, that column size will be applied to all smaller screen sizes unless explicitly set otherwise. Standard CSS selector precedence rules apply here. The one exception is the 'wide' size, which doesn't apply any of its changes to smaller sizes.
+
 
 ## Sass and Semantic Markup
 Because Orbital is a Sass library, it doesn't require you to clutter up your HTML with clunky grid framework class names. You can simply apply Orbital's mixins to your pre-existing CSS selectors, letting you keep your markup nice and clean.
@@ -39,7 +41,7 @@ From there, you can access any of its functionality via mixins.
 ```
 Sizes the element to a given number of 50px columns.
 
-You must include a value for `$full`. Other than that, all sizes are optional and will default to the `$full` value. 
+You must include a value for `$full`. Other than that, all sizes are optional and will default to the `$full` value. As mentioned above, with the exception of the `$wide` size, a value given for a specific screen size will also apply to all smaller screen sizes unless you explicitly set a different value for those smaller screens.
 
   * `$full`: The number of columns to take up in default view (1150px-1350px)
   * `$wide`: The number of columns for wide view
@@ -51,9 +53,9 @@ You must include a value for `$full`. Other than that, all sizes are optional an
   * `$marginless`: By default, grid columns do not contain a gutter. If `$marginless` is set to false, a five-pixel gutter will be applied as a left margin.
   * `$table`: Set this to true if the elements being sized are part of an HTML table. By default, columns are arranged horizontally by making them all `float:left`. If the columns are part of a table, this isn't acceptable, so we need to accomodate.
 
-I personally recommend referencing all variables other than $full by name. For example, if you want an element to take up 3 columns on all screen sizes except for a portrait or landscape smartphone, where it should only be 1 column, I would recommend writing it as such:
+I personally recommend referencing all variables other than $full by name. For example, if you want an element to take up 3 columns on all screen sizes except for a portrait or landscape smartphone, where it should only be 1 column, I would write it as such:
 
-`+column(3, $iphone-landscape: 1, $iphone-portrait: 1)`
+`+column(3, $iphone-landscape: 1)`
 
 
 **full-width-column**

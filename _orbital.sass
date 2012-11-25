@@ -2,18 +2,18 @@
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights 
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
-// copies of the Software, and to permit persons to whom the Software is 
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in 
+// The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
@@ -33,27 +33,27 @@ $iphone-landscape-min: 450px
 //------------------------------------------------------------------------------
 // Convenience mixins for media queries
 //------------------------------------------------------------------------------
-@mixin wide
+=wide
   @media only screen and (min-width: $wide-min)
     @content
 
-@mixin full
+=full
   @media only screen and (min-width: $full-min) and (max-width: $wide-min)
     @content
 
-@mixin ipad-landscape
+=ipad-landscape
   @media only screen and (min-width: $ipad-landscape-min) and (max-width: $full-min)
     @content
 
-@mixin ipad-portrait
+=ipad-portrait
   @media only screen and (min-width: $ipad-portrait-min) and (max-width: $ipad-landscape-min)
     @content
 
-@mixin iphone-landscape
+=iphone-landscape
   @media only screen and (min-width: $iphone-landscape-min) and (max-width: $ipad-portrait-min)
     @content
 
-@mixin iphone-portrait
+=iphone-portrait
   @media only screen and (max-width: $iphone-landscape-min)
     @content
 
@@ -78,7 +78,7 @@ $iphone-landscape-min: 450px
 //------------------------------------------------------------------------------
 // The actual mixins
 //------------------------------------------------------------------------------
-@mixin column($full: 1, $wide: -1, $ipad-landscape: -1, $ipad-portrait: -1, $iphone-landscape: -1, $iphone-portrait: -1, $subtract: 0, $marginless: true, $table: false)
+=column($full: 1, $wide: -1, $ipad-landscape: -1, $ipad-portrait: -1, $iphone-landscape: -1, $iphone-portrait: -1, $subtract: 0, $marginless: true, $table: false)
   box-sizing: border-box
 
   @if not $table
@@ -89,7 +89,7 @@ $iphone-landscape-min: 450px
 
   +responsive($property: width, $wide: grid-width-sub($wide, $marginless, $subtract), $full: grid-width-sub($full, $marginless, $subtract), $ipad-landscape: grid-width-sub($ipad-landscape, $marginless, $subtract), $ipad-portrait: grid-width-sub($ipad-portrait, $marginless, $subtract), $iphone-landscape: grid-width-sub($iphone-landscape, $marginless, $subtract), $iphone-portrait: grid-width-sub($iphone-portrait, $marginless, $subtract))
 
-@mixin responsive($property: width, $wide: -1, $full: -1, $ipad-landscape: -1, $ipad-portrait: -1, $iphone-landscape: -1, $iphone-portrait: -1)
+=responsive($property: width, $wide: -1, $full: -1, $ipad-landscape: -1, $ipad-portrait: -1, $iphone-landscape: -1, $iphone-portrait: -1)
   width: $full
 
   @if $wide != -1
@@ -113,11 +113,11 @@ $iphone-landscape-min: 450px
       width: $iphone-portrait
 
 
-@mixin full-width-column($full: 19, $wide: 24, $ipad-landscape: 18, $ipad-portrait: 13, $iphone-landscape: 9, $iphone-portrait: 6, $subtract: 0)
+=full-width-column($full: 19, $wide: 24, $ipad-landscape: 18, $ipad-portrait: 13, $iphone-landscape: 9, $iphone-portrait: 6, $subtract: 0)
   +column($full, $wide, $ipad-landscape, $ipad-portrait, $iphone-landscape, $iphone-portrait, $subtract, $table: true)
   display: block
 
-@mixin after($full: 1, $wide: -1, $ipad-landscape: -1, $ipad-portrait: -1, $iphone-landscape: -1, $iphone-portrait: -1, $type: 'margin')
+=after($full: 1, $wide: -1, $ipad-landscape: -1, $ipad-portrait: -1, $iphone-landscape: -1, $iphone-portrait: -1, $type: 'margin')
   #{$type}-right: grid-width($full, true)
 
   @if $ipad-landscape != -1
@@ -134,7 +134,7 @@ $iphone-landscape-min: 450px
       #{$type}-right: grid-width($iphone-portrait, true)
 
 // Adds whitespace before a given element.
-@mixin before($full: 1, $wide: -1, $ipad-landscape: -1, $ipad-portrait: -1, $iphone-landscape: -1, $iphone-portrait: -1, $marginless: true, $type: 'margin')
+=before($full: 1, $wide: -1, $ipad-landscape: -1, $ipad-portrait: -1, $iphone-landscape: -1, $iphone-portrait: -1, $marginless: true, $type: 'margin')
   $margin: 0
   +before-helper($full, $marginless, $type)
 
@@ -166,7 +166,7 @@ $iphone-landscape-min: 450px
       +iphone-portrait
         #{$type}-left: $grid-width * $iphone-portrait
 
-@mixin before-helper($cols, $marginless, $type)
+=before-helper($cols, $marginless, $type)
   $width: grid-width($cols, $marginless)
   @if $marginless
     #{$type}-left: $width
@@ -180,7 +180,7 @@ $iphone-landscape-min: 450px
 // This mixin handles positioning something as fixed on the right-hand side of the wrapper.
 // If we ever want something to be position: fixed in a different location, work will be needed.
 // The $parent family of variables refer to the size of the wrapper div.
-@mixin fixed-column($full: 1, $wide: -1, $ipad-landscape: -1, $ipad-portrait: -1, $parent-wide: 19, $parent-full: 19, $parent-ipad-landscape: 18, $parent-ipad-portrait: 13, $full-column: 0, $wide-column: -1, $ipad-landscape-column: -1, $ipad-portrait-column: -1, $subtract: -1)
+=fixed-column($full: 1, $wide: -1, $ipad-landscape: -1, $ipad-portrait: -1, $parent-wide: 19, $parent-full: 19, $parent-ipad-landscape: 18, $parent-ipad-portrait: 13, $full-column: 0, $wide-column: -1, $ipad-landscape-column: -1, $ipad-portrait-column: -1, $subtract: -1)
   box-sizing: content-box
   position: fixed
   left: 50%

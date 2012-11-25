@@ -18,9 +18,48 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+//------------------------------------------------------------------------------
+// Variables
+//------------------------------------------------------------------------------
 $grid-gutter: 5px
 $grid-width: 50px
 
+$wide-min: 1350px
+$full-min: 1150px
+$ipad-landscape-min: 1000px
+$ipad-portrait-min: 650px
+$iphone-landscape-min: 450px
+
+//------------------------------------------------------------------------------
+// Convenience mixins for media queries
+//------------------------------------------------------------------------------
+@mixin wide
+  @media only screen and (min-width: $wide-min)
+    @content
+
+@mixin full
+  @media only screen and (min-width: $full-min) and (max-width: $wide-min)
+    @content
+
+@mixin ipad-landscape
+  @media only screen and (min-width: $ipad-landscape-min) and (max-width: $full-min)
+    @content
+
+@mixin ipad-portrait
+  @media only screen and (min-width: $ipad-portrait-min) and (max-width: $ipad-landscape-min)
+    @content
+
+@mixin iphone-landscape
+  @media only screen and (min-width: $iphone-landscape-min) and (max-width: $ipad-portrait-min)
+    @content
+
+@mixin iphone-portrait
+  @media only screen and (max-width: $iphone-landscape-min)
+    @content
+
+//------------------------------------------------------------------------------
+// Calculation functions
+//------------------------------------------------------------------------------
 @function grid-width($cols, $marginless: true)
   @if $marginless
     @return $grid-width * $cols
@@ -36,9 +75,11 @@ $grid-width: 50px
   @else
     @return -1
 
-
-@mixin column($full: 1, $wide: 1, $ipad-landscape: -1, $ipad-portrait: -1, $subtract: 0, $marginless: true, $table: false)
-  +box-sizing(border-box)
+//------------------------------------------------------------------------------
+// The actual mixins
+//------------------------------------------------------------------------------
+@mixin column($full: 1, $wide: -1, $ipad-landscape: -1, $ipad-portrait: -1, $iphone-landscape: -1, $iphone-portrait: -1, $subtract: 0, $marginless: true, $table: false)
+  box-sizing: border-box
 
   @if not $table
     float: left
@@ -46,53 +87,84 @@ $grid-width: 50px
   @if not $marginless
     margin-left: $grid-gutter
 
-  +responsive($property: width, $wide: grid-width-sub($full, $marginless, $subtract), $full: grid-width-sub($full, $marginless, $subtract), $ipad-landscape: grid-width-sub($ipad-landscape, $marginless, $subtract), $ipad-portrait: grid-width-sub($ipad-portrait, $marginless, $subtract))
+  +responsive($property: width, $wide: grid-width-sub($wide, $marginless, $subtract), $full: grid-width-sub($full, $marginless, $subtract), $ipad-landscape: grid-width-sub($ipad-landscape, $marginless, $subtract), $ipad-portrait: grid-width-sub($ipad-portrait, $marginless, $subtract), $iphone-landscape: grid-width-sub($iphone-landscape, $marginless, $subtract), $iphone-portrait: grid-width-sub($iphone-portrait, $marginless, $subtract))
 
-@mixin responsive($property: width, $wide: -1, $full: -1, $ipad-landscape: -1, $ipad-portrait: -1)
+@mixin responsive($property: width, $wide: -1, $full: -1, $ipad-landscape: -1, $ipad-portrait: -1, $iphone-landscape: -1, $iphone-portrait: -1)
   width: $full
 
+  @if $wide != -1
+    +wide
+      width: $wide
+
   @if $ipad-landscape != -1
-    @media only screen and (min-width: 1000px) and (max-width:1150px)
+    +ipad-landscape
       width: $ipad-landscape
 
   @if $ipad-portrait != -1
-    @media only screen and (max-width : 1000px)
+    +ipad-portrait
       width: $ipad-portrait
 
-@mixin full-width-column($full: 19, $wide: 19, $ipad-landscape: 18, $ipad-portrait: 13, $subtract: 0)
-  +column($full, $wide, $ipad-landscape, $ipad-portrait, $subtract)
+  @if $iphone-landscape != -1
+    +iphone-landscape
+      width: $iphone-landscape
+
+  @if $iphone-portrait != -1
+    +iphone-portrait
+      width: $iphone-portrait
+
+
+@mixin full-width-column($full: 19, $wide: 24, $ipad-landscape: 18, $ipad-portrait: 13, $iphone-landscape: 9, $iphone-portrait: 6, $subtract: 0)
+  +column($full, $wide, $ipad-landscape, $ipad-portrait, $iphone-landscape, $iphone-portrait, $subtract, $table: true)
   display: block
 
-@mixin after($full: 1, $wide: -1, $ipad-landscape: -1, $ipad-portrait: -1, $type: 'margin')
+@mixin after($full: 1, $wide: -1, $ipad-landscape: -1, $ipad-portrait: -1, $iphone-landscape: -1, $iphone-portrait: -1, $type: 'margin')
   #{$type}-right: grid-width($full, true)
 
   @if $ipad-landscape != -1
-    @media only screen and (min-width : 1000px) and (max-width: 1150px)
+    +ipad-landscape
       #{$type}-right: grid-width($ipad-landscape, true)
   @if $ipad-portrait != -1
-    @media only screen and (max-width : 1000px)
+    +ipad-portrait
       #{$type}-right: grid-width($ipad-portrait, true)
+  @if $iphone-landscape != -1
+    +iphone-landscape
+      #{$type}-right: grid-width($iphone-landscape, true)
+  @if $iphone-portrait != -1
+    +iphone-portrait
+      #{$type}-right: grid-width($iphone-portrait, true)
 
 // Adds whitespace before a given element.
-@mixin before($full: 1, $wide: -1, $ipad-landscape: -1, $ipad-portrait: -1, $marginless: true, $type: 'margin')
+@mixin before($full: 1, $wide: -1, $ipad-landscape: -1, $ipad-portrait: -1, $iphone-landscape: -1, $iphone-portrait: -1, $marginless: true, $type: 'margin')
   $margin: 0
   +before-helper($full, $marginless, $type)
 
   @if $ipad-landscape != -1
-    @media only screen and (min-width : 1000px) and (max-width: 1150px)
+    +ipad-landscape
       +before-helper($ipad-landscape, $marginless, $type)
   @if $ipad-portrait != -1
-    @media only screen and (max-width : 1000px)
+    +ipad-portrait
       +before-helper($ipad-portrait, $marginless, $type)
+  @if $iphone-landscape != -1
+    +iphone-landscape
+      +before-helper($iphone-landscape, $marginless, $type)
+  @if $iphone-portrait != -1
+    +iphone-portrait
+      +before-helper($iphone-portrait, $marginless, $type)
 
   // Edge cases!
   @if not $marginless
     @if $ipad-landscape == 0
-      @media only screen and (min-width : 1000px) and (max-width: 1150px)
+      +ipad-landscape
         #{$type}-left: $grid-width * $ipad-landscape
     @if $ipad-portrait == 0
-      @media only screen and (max-width : 1000px)
+      +ipad-portrait
         #{$type}-left: $grid-width * $ipad-portrait
+    @if $iphone-landscape == 0
+      +iphone-landscape
+        #{$type}-left: $grid-width * $iphone-landscape
+    @if $iphone-portrait == 0
+      +iphone-portrait
+        #{$type}-left: $grid-width * $iphone-portrait
 
 @mixin before-helper($cols, $marginless, $type)
   $width: grid-width($cols, $marginless)
@@ -127,7 +199,7 @@ $grid-width: 50px
   //   width: grid-width($wide, true)
   //   margin-left: grid-width($wide-column, true) - grid-width($parent-wide, true) / 2
 
-  @media only screen and (min-width : 1000px) and (max-width: 1150px)
+  +ipad-landscape
     @if $ipad-landscape == -1
       $ipad-landscape: $full
 
@@ -137,7 +209,7 @@ $grid-width: 50px
     width: grid-width-sub($ipad-landscape, true, $subtract)
     margin-left: grid-width($ipad-landscape-column, true) - grid-width($parent-ipad-landscape, true) / 2
 
-  @media only screen and (max-width : 1000px)
+  +ipad-portrait
     @if $ipad-portrait == -1
       $ipad-portrait: $ipad-landscape
     @if $ipad-portrait-column == -1

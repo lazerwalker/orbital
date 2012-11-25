@@ -5,14 +5,14 @@ With most responsive CSS grid frameworks, your grid has a fixed number of column
 
 In Orbital, one column is always 50 pixels. As the browser window shrinks or grows, what changes is the number of columns that fit in a single row. This means that different parts of your design can respond differently to changes in resolution: if you want to shrink your main content element while your side navigation bar always stays the same width, Orbital can help you make that happen.
 
-To do this, Orbital defines a number of different breakpoints ('orbitals', if you will) at which the number of columns changes. Currently, there are six different sizes:
+To do this, Orbital defines a number of different breakpoints ('orbitals', if you will) at which the number of columns changes. Currently, there are six different sizes. The names in parentheses are the canonical variable names used in Orbital's API to describe each size.
 
-  * Extra-wide (`wide`): > 1350px
-  * Normal (`full`): 1150px-1350px
-  * Low-resolution and landscape tablet (`ipad-landscape`): 1000px-1150px
-  * Portrait tablet (`ipad-portrait`): 650px-1000px
-  * Landscape smartphone (`iphone-landscape`): 450px-650px
-  * Portrait smartphone (`iphone-portrait`): < 450px
+  * Extra-wide ("wide"): > 1350px
+  * Normal ("full"): 1150px-1350px
+  * Low-resolution and landscape tablet ("ipad-landscape"): 1000px-1150px
+  * Portrait tablet ("ipad-portrait"): 650px-1000px
+  * Landscape smartphone ("iphone-landscape"): 450px-650px
+  * Portrait smartphone ("iphone-portrait"): < 450px
 
 When you define an element's width in CSS, you can specify how many columns it should occupy in each of these four sizes, and the elements will resize themselves as appropriate thanks to CSS media queries.
 
@@ -23,7 +23,9 @@ Because Orbital is a Sass library, it doesn't require you to clutter up your HTM
 Although Orbital is written in Sass, it will work perfectly fine if your code uses the SCSS syntax instead. All examples in this document are using the Sass syntax.
 
 ## Usage
-To set up orbital, simply include _orbital.sass from any Sass/SCSS file.
+Orbital requires Sass 3.2 or newer.
+
+To start using Orbital, simply include _orbital.sass from any Sass/SCSS file.
 
 ```@import orbital```
 
@@ -33,21 +35,25 @@ From there, you can access any of its functionality via mixins.
 ## API Reference
 **column**
 ```
-+column($full, $wide, $ipad-landscape, $ipad-portrait, $subtract, $marginless: true, $table)
++column($full, $wide, $ipad-landscape, $ipad-portrait, $iphone-landscape, $iphone-portrait, $subtract, $marginless: true, $table)
 ```
 Sizes the element to a given number of 50px columns.
 
-You must include a value for `$full`. Other than that, all sizes are optional and will default to the `$full` value.
+You must include a value for `$full`. Other than that, all sizes are optional and will default to the `$full` value. 
 
   * `$full`: The number of columns to take up in default view (1150px-1350px)
-  * `$wide`: The number of columns for wide view (> 1350px)
-  * `$ipad-landscape`: Number of columns for 1000px-1150px
+  * `$wide`: The number of columns for wide view
+  * `$ipad-landscape`: Number of columns for `ipad-landscape`
   * `$ipad-portrait`: Number of columns for 650px-1000px
-  * `$iphone-landscape`: Number of columns for 480px-650px
-  * `$iphone-portrait`: Number of columns for < 480px
-  * `$subtract`: A number of pixels to subtract from the absolute final width. Because all columns are using box-sizing: border-box, adding an n-pixel border to an element will cause its internal contents to have 2*n less pixels, which means that children whose column sizes add up to the same as the parent element won't actually fit. By using $subtract to shrink the children elements by as many pixels are added by the presence of a border, you can make everything fit.
+  * `$iphone-landscape`: Number of columns for 450px-650px
+  * `$iphone-portrait`: Number of columns for < 450px
+  * `$subtract`: A number of pixels to subtract from the absolute final width. Because all columns are using `box-sizing: border-box`, adding an n-pixel border to an element will cause its internal contents to have 2*n less pixels, which means that children whose column sizes add up to the same as the parent element won't actually fit. By using `$subtract` to shrink the children elements by as many pixels are added by the presence of a border, you can make everything fit.
   * `$marginless`: By default, grid columns do not contain a gutter. If `$marginless` is set to false, a five-pixel gutter will be applied as a left margin.
-  * `$table`: Set this to true if the elements being sized are part of an HTML table. By default, columns are arranged horizontally by making them all float:left. If the columns are part of a table, this isn't acceptable, so we need to accomodate.
+  * `$table`: Set this to true if the elements being sized are part of an HTML table. By default, columns are arranged horizontally by making them all `float:left`. If the columns are part of a table, this isn't acceptable, so we need to accomodate.
+
+I personally recommend referencing all variables other than $full by name. For example, if you want an element to take up 3 columns on all screen sizes except for a portrait or landscape smartphone, where it should only be 1 column, I would recommend writing it as such:
+
+`+column(3, $iphone-landscape: 1, $iphone-portrait: 1)`
 
 
 **full-width-column**
@@ -55,7 +61,7 @@ You must include a value for `$full`. Other than that, all sizes are optional an
 +full-width-column($subtract)
 ```
 
-This is a shorthand function to make an element span the entire width of the page, with an optional subtract value. You can also pass in column numbers for any accepted size (`$full`, `$wide`, `$ipad-landscape`, etc), but that isn't recommended.
+This is a shorthand function to make an element span the entire width of the page, with an optional subtract value. You can also pass in column numbers for any accepted size (See `+column` definition for variable names), but that isn't recommended.
 
 
 **before**
@@ -63,7 +69,7 @@ This is a shorthand function to make an element span the entire width of the pag
 +before($full, $wide, $ipad-landscape, $ipad-portrait, $iphone-landscape, $iphone-portrait, $type: 'margin')
 ```
 
-Adds the given number of columns as whitespace before an element. By default, the whitespace will be added as a margin, but this can be changed to padding by passing in 'padding' for the $type variable
+Adds the given number of columns as whitespace before an element. By default, the whitespace will be added as a margin, but this can be changed to padding by passing in `'padding'` for the `$type` variable
 
 
 **after**
@@ -81,16 +87,9 @@ Adds the given number of columns as whitespace after an element. As with `+befor
     ...
 ```
 
-For all six screen sizes, there are helper mixins defined to let you easily access the appropriate media query if you need to do custom work.
+For all six screen sizes, there are helper mixins defined to let you easily access the appropriate media query if you need to include any custom styling. They are named appropriately based on the sizes defined above: `+full, +wide, +ipad-landscape, +ipad-portrait, +iphone-landscape, +iphone-portrait`.
 
-  * `+wide`
-  * `+full`
-  * `+ipad-landscape`
-  * `+ipad-portrait`
-  * `+iphone-landscape`
-  * `+iphone-portrait`
-
-None of the Orbital code uses use the 'full' mixin, but it is included in the library for the sake of completeness. If you find yourself using it frequently, that's a likely indicator that your CSS has a bit of code smell and that you might want to reconsider your approach.
+None of the Orbital code uses the mixin for the 'full' size, but it is included in the library for the sake of completeness. If you find yourself using it frequently, that's a likely indicator that your CSS has a bit of code smell and that you might want to reconsider your approach.
 
 ## License
 Copyright (C) 2012 Lore Inc.

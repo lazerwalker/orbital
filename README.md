@@ -33,6 +33,10 @@ To start using Orbital, simply include _orbital.sass from any Sass/SCSS file.
 
 From there, you can access any of its functionality via mixins.
 
+## Demos / Examples
+
+I'm still working on a proper demo page, but for now you can see Orbital live in action on [Lore](http://lore.com) and on my [personal site](http://lazerwalker.com).
+The uncompiled Sass stylesheet for my personal site is available on GitHub [here](https://github.com/lazerwalker/lazerwalker.com/blob/master/css/scss/style.sass)
 
 ## API Reference
 **column**

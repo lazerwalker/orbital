@@ -120,6 +120,9 @@ $iphone-landscape-min: 450px
 =after($full: 1, $wide: -1, $ipad-landscape: -1, $ipad-portrait: -1, $iphone-landscape: -1, $iphone-portrait: -1, $type: 'margin')
   #{$type}-right: grid-width($full, true)
 
+  @if $wide != -1
+    +wide
+      #{$type}-right: grid-width($wide, true)
   @if $ipad-landscape != -1
     +ipad-landscape
       #{$type}-right: grid-width($ipad-landscape, true)
@@ -138,6 +141,9 @@ $iphone-landscape-min: 450px
   $margin: 0
   +before-helper($full, $marginless, $type)
 
+  @if $wide != -1
+    +wide
+      +before-helper($wide, $marginless, $type)
   @if $ipad-landscape != -1
     +ipad-landscape
       +before-helper($ipad-landscape, $marginless, $type)
@@ -217,4 +223,3 @@ $iphone-landscape-min: 450px
 
     width: grid-width-sub($ipad-portrait, true, $subtract)
     margin-left: grid-width($ipad-portrait-column, true) - grid-width($parent-ipad-portrait, true) / 2
-

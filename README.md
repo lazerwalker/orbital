@@ -9,10 +9,10 @@ To do this, Orbital defines a number of different breakpoints ('orbitals', if yo
 
   * Extra-wide ("wide"): > 1350px
   * Normal ("full"): 1150px-1350px
-  * Low-resolution and landscape tablet ("ipad-landscape"): 1000px-1150px
-  * Portrait tablet ("ipad-portrait"): 650px-1000px
-  * Landscape smartphone ("iphone-landscape"): 450px-650px
-  * Portrait smartphone ("iphone-portrait"): < 450px
+  * Low-resolution and landscape tablet ("tablet-landscape"): 1000px-1150px
+  * Portrait tablet ("tablet-portrait"): 650px-1000px
+  * Landscape smartphone ("phone-landscape"): 450px-650px
+  * Portrait smartphone ("phone-portrait"): < 450px
 
 When you define an element's width in CSS, you can specify how many columns it should occupy in each of these four sizes, and the elements will resize themselves as appropriate thanks to CSS media queries.
 
@@ -41,25 +41,25 @@ The uncompiled Sass stylesheet for my personal site is available on GitHub [here
 ## API Reference
 **column**
 ```
-+column($full, $wide, $ipad-landscape, $ipad-portrait, $iphone-landscape, $iphone-portrait, $subtract, $marginless: true, $table)
++column($full, $wide, $tablet-landscape, $tablet-portrait, $phone-landscape, $phone-portrait, $subtract, $marginless: true, $table)
 ```
 Sizes the element to a given number of 50px columns.
 
 You must include a value for `$full`. Other than that, all sizes are optional and will default to the `$full` value. As mentioned above, with the exception of the `$wide` size, a value given for a specific screen size will also apply to all smaller screen sizes unless you explicitly set a different value for those smaller screens.
 
   * `$full`: The number of columns to take up in default view (1150px-1350px)
-  * `$wide`: The number of columns for wide view
-  * `$ipad-landscape`: Number of columns for `ipad-landscape`
-  * `$ipad-portrait`: Number of columns for 650px-1000px
-  * `$iphone-landscape`: Number of columns for 450px-650px
-  * `$iphone-portrait`: Number of columns for < 450px
+  * `$wide`: The number of columns for wide view (> 1350px)
+  * `$tablet-landscape`: Number of columns for 1000px-1150px
+  * `$tablet-portrait`: Number of columns for 650px-1000px
+  * `$phone-landscape`: Number of columns for 450px-650px
+  * `$phone-portrait`: Number of columns for < 450px
   * `$subtract`: A number of pixels to subtract from the absolute final width. Because all columns are using `box-sizing: border-box`, adding an n-pixel border to an element will cause its internal contents to have 2*n less pixels, which means that children whose column sizes add up to the same as the parent element won't actually fit. By using `$subtract` to shrink the children elements by as many pixels are added by the presence of a border, you can make everything fit.
   * `$marginless`: By default, grid columns do not contain a gutter. If `$marginless` is set to false, a five-pixel gutter will be applied as a left margin.
   * `$table`: Set this to true if the elements being sized are part of an HTML table. By default, columns are arranged horizontally by making them all `float:left`. If the columns are part of a table, this isn't acceptable, so we need to accomodate.
 
 I personally recommend referencing all variables other than $full by name. For example, if you want an element to take up 3 columns on all screen sizes except for a portrait or landscape smartphone, where it should only be 1 column, I would write it as such:
 
-`+column(3, $iphone-landscape: 1)`
+`+column(3, $phone-landscape: 1)`
 
 
 **full-width-column**
@@ -72,7 +72,7 @@ This is a shorthand function to make an element span the entire width of the pag
 
 **before**
 ```
-+before($full, $wide, $ipad-landscape, $ipad-portrait, $iphone-landscape, $iphone-portrait, $type: 'margin')
++before($full, $wide, $tablet-landscape, $tablet-portrait, $phone-landscape, $phone-portrait, $type: 'margin')
 ```
 
 Adds the given number of columns as whitespace before an element. By default, the whitespace will be added as a margin, but this can be changed to padding by passing in `'padding'` for the `$type` variable
@@ -80,20 +80,20 @@ Adds the given number of columns as whitespace before an element. By default, th
 
 **after**
 ```
-+after($full, $wide, $ipad-landscape, $ipad-portrait, $iphone-landscape, $iphone-portait, $type: 'margin')
++after($full, $wide, $tablet-landscape, $tablet-portrait, $phone-landscape, $phone-portait, $type: 'margin')
 ```
 
 Adds the given number of columns as whitespace after an element. As with `+before()`, the whitespace is added as a margin but can be made to use padding.
 
 **media query helpers**
 ```
-  +ipad-landscape
+  +tablet-landscape
     // Standard Sass/CSS goes here
     border: 1px solid black
     ...
 ```
 
-For all six screen sizes, there are helper mixins defined to let you easily access the appropriate media query if you need to include any custom styling. They are named appropriately based on the sizes defined above: `+full, +wide, +ipad-landscape, +ipad-portrait, +iphone-landscape, +iphone-portrait`.
+For all six screen sizes, there are helper mixins defined to let you easily access the appropriate media query if you need to include any custom styling. They are named appropriately based on the sizes defined above: `+full, +wide, +tablet-landscape, +tablet-portrait, +phone-landscape, +phone-portrait`.
 
 None of the Orbital code uses the mixin for the 'full' size, but it is included in the library for the sake of completeness. If you find yourself using it frequently, that's a likely indicator that your CSS has a bit of code smell and that you might want to reconsider your approach.
 

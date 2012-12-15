@@ -26,9 +26,9 @@ $grid-width: 50px
 
 $wide-min: 1350px
 $full-min: 1150px
-$ipad-landscape-min: 1000px
-$ipad-portrait-min: 650px
-$iphone-landscape-min: 450px
+$tablet-landscape-min: 1000px
+$tablet-portrait-min: 650px
+$phone-landscape-min: 450px
 
 //------------------------------------------------------------------------------
 // Convenience mixins for media queries
@@ -41,20 +41,20 @@ $iphone-landscape-min: 450px
   @media only screen and (max-width: $wide-min)
     @content
 
-=ipad-landscape
+=tablet-landscape
   @media only screen and (max-width: $full-min)
     @content
 
-=ipad-portrait
-  @media only screen and (max-width: $ipad-landscape-min)
+=tablet-portrait
+  @media only screen and (max-width: $tablet-landscape-min)
     @content
 
-=iphone-landscape
-  @media only screen and (max-width: $ipad-portrait-min)
+=phone-landscape
+  @media only screen and (max-width: $tablet-portrait-min)
     @content
 
-=iphone-portrait
-  @media only screen and (max-width: $iphone-landscape-min)
+=phone-portrait
+  @media only screen and (max-width: $phone-landscape-min)
     @content
 
 //------------------------------------------------------------------------------
@@ -78,7 +78,7 @@ $iphone-landscape-min: 450px
 //------------------------------------------------------------------------------
 // The actual mixins
 //------------------------------------------------------------------------------
-=column($full: 1, $wide: -1, $ipad-landscape: -1, $ipad-portrait: -1, $iphone-landscape: -1, $iphone-portrait: -1, $subtract: 0, $marginless: true, $table: false)
+=column($full: 1, $wide: -1, $tablet-landscape: -1, $tablet-portrait: -1, $phone-landscape: -1, $phone-portrait: -1, $subtract: 0, $marginless: true, $table: false)
   box-sizing: border-box
 
   @if not $table
@@ -87,90 +87,90 @@ $iphone-landscape-min: 450px
   @if not $marginless
     margin-left: $grid-gutter
 
-  +responsive($property: width, $wide: grid-width-sub($wide, $marginless, $subtract), $full: grid-width-sub($full, $marginless, $subtract), $ipad-landscape: grid-width-sub($ipad-landscape, $marginless, $subtract), $ipad-portrait: grid-width-sub($ipad-portrait, $marginless, $subtract), $iphone-landscape: grid-width-sub($iphone-landscape, $marginless, $subtract), $iphone-portrait: grid-width-sub($iphone-portrait, $marginless, $subtract))
+  +responsive($property: width, $wide: grid-width-sub($wide, $marginless, $subtract), $full: grid-width-sub($full, $marginless, $subtract), $tablet-landscape: grid-width-sub($tablet-landscape, $marginless, $subtract), $tablet-portrait: grid-width-sub($tablet-portrait, $marginless, $subtract), $phone-landscape: grid-width-sub($phone-landscape, $marginless, $subtract), $phone-portrait: grid-width-sub($phone-portrait, $marginless, $subtract))
 
-=responsive($property: width, $wide: -1, $full: -1, $ipad-landscape: -1, $ipad-portrait: -1, $iphone-landscape: -1, $iphone-portrait: -1)
+=responsive($property: width, $wide: -1, $full: -1, $tablet-landscape: -1, $tablet-portrait: -1, $phone-landscape: -1, $phone-portrait: -1)
   width: $full
 
   @if $wide != -1
     +wide
       width: $wide
 
-  @if $ipad-landscape != -1
-    +ipad-landscape
-      width: $ipad-landscape
+  @if $tablet-landscape != -1
+    +tablet-landscape
+      width: $tablet-landscape
 
-  @if $ipad-portrait != -1
-    +ipad-portrait
-      width: $ipad-portrait
+  @if $tablet-portrait != -1
+    +tablet-portrait
+      width: $tablet-portrait
 
-  @if $iphone-landscape != -1
-    +iphone-landscape
-      width: $iphone-landscape
+  @if $phone-landscape != -1
+    +phone-landscape
+      width: $phone-landscape
 
-  @if $iphone-portrait != -1
-    +iphone-portrait
-      width: $iphone-portrait
+  @if $phone-portrait != -1
+    +phone-portrait
+      width: $phone-portrait
 
 
-=full-width-column($full: 19, $wide: 24, $ipad-landscape: 18, $ipad-portrait: 13, $iphone-landscape: 9, $iphone-portrait: 6, $subtract: 0)
-  +column($full, $wide, $ipad-landscape, $ipad-portrait, $iphone-landscape, $iphone-portrait, $subtract, $table: true)
+=full-width-column($full: 19, $wide: 24, $tablet-landscape: 18, $tablet-portrait: 13, $phone-landscape: 9, $phone-portrait: 6, $subtract: 0)
+  +column($full, $wide, $tablet-landscape, $tablet-portrait, $phone-landscape, $phone-portrait, $subtract, $table: true)
   display: block
 
-=after($full: 1, $wide: -1, $ipad-landscape: -1, $ipad-portrait: -1, $iphone-landscape: -1, $iphone-portrait: -1, $type: 'margin')
+=after($full: 1, $wide: -1, $tablet-landscape: -1, $tablet-portrait: -1, $phone-landscape: -1, $phone-portrait: -1, $type: 'margin')
   #{$type}-right: grid-width($full, true)
 
   @if $wide != -1
     +wide
       #{$type}-right: grid-width($wide, true)
-  @if $ipad-landscape != -1
-    +ipad-landscape
-      #{$type}-right: grid-width($ipad-landscape, true)
-  @if $ipad-portrait != -1
-    +ipad-portrait
-      #{$type}-right: grid-width($ipad-portrait, true)
-  @if $iphone-landscape != -1
-    +iphone-landscape
-      #{$type}-right: grid-width($iphone-landscape, true)
-  @if $iphone-portrait != -1
-    +iphone-portrait
-      #{$type}-right: grid-width($iphone-portrait, true)
+  @if $tablet-landscape != -1
+    +tablet-landscape
+      #{$type}-right: grid-width($tablet-landscape, true)
+  @if $tablet-portrait != -1
+    +tablet-portrait
+      #{$type}-right: grid-width($tablet-portrait, true)
+  @if $phone-landscape != -1
+    +phone-landscape
+      #{$type}-right: grid-width($phone-landscape, true)
+  @if $phone-portrait != -1
+    +phone-portrait
+      #{$type}-right: grid-width($phone-portrait, true)
 
 // Adds whitespace before a given element.
-=before($full: 1, $wide: -1, $ipad-landscape: -1, $ipad-portrait: -1, $iphone-landscape: -1, $iphone-portrait: -1, $marginless: true, $type: 'margin')
+=before($full: 1, $wide: -1, $tablet-landscape: -1, $tablet-portrait: -1, $phone-landscape: -1, $phone-portrait: -1, $marginless: true, $type: 'margin')
   $margin: 0
   +before-helper($full, $marginless, $type)
 
   @if $wide != -1
     +wide
       +before-helper($wide, $marginless, $type)
-  @if $ipad-landscape != -1
-    +ipad-landscape
-      +before-helper($ipad-landscape, $marginless, $type)
-  @if $ipad-portrait != -1
-    +ipad-portrait
-      +before-helper($ipad-portrait, $marginless, $type)
-  @if $iphone-landscape != -1
-    +iphone-landscape
-      +before-helper($iphone-landscape, $marginless, $type)
-  @if $iphone-portrait != -1
-    +iphone-portrait
-      +before-helper($iphone-portrait, $marginless, $type)
+  @if $tablet-landscape != -1
+    +tablet-landscape
+      +before-helper($tablet-landscape, $marginless, $type)
+  @if $tablet-portrait != -1
+    +tablet-portrait
+      +before-helper($tablet-portrait, $marginless, $type)
+  @if $phone-landscape != -1
+    +phone-landscape
+      +before-helper($phone-landscape, $marginless, $type)
+  @if $phone-portrait != -1
+    +phone-portrait
+      +before-helper($phone-portrait, $marginless, $type)
 
   // Edge cases!
   @if not $marginless
-    @if $ipad-landscape == 0
-      +ipad-landscape
-        #{$type}-left: $grid-width * $ipad-landscape
-    @if $ipad-portrait == 0
-      +ipad-portrait
-        #{$type}-left: $grid-width * $ipad-portrait
-    @if $iphone-landscape == 0
-      +iphone-landscape
-        #{$type}-left: $grid-width * $iphone-landscape
-    @if $iphone-portrait == 0
-      +iphone-portrait
-        #{$type}-left: $grid-width * $iphone-portrait
+    @if $tablet-landscape == 0
+      +tablet-landscape
+        #{$type}-left: $grid-width * $tablet-landscape
+    @if $tablet-portrait == 0
+      +tablet-portrait
+        #{$type}-left: $grid-width * $tablet-portrait
+    @if $phone-landscape == 0
+      +phone-landscape
+        #{$type}-left: $grid-width * $phone-landscape
+    @if $phone-portrait == 0
+      +phone-portrait
+        #{$type}-left: $grid-width * $phone-portrait
 
 =before-helper($cols, $marginless, $type)
   $width: grid-width($cols, $marginless)
@@ -186,7 +186,7 @@ $iphone-landscape-min: 450px
 // This mixin handles positioning something as fixed on the right-hand side of the wrapper.
 // If we ever want something to be position: fixed in a different location, work will be needed.
 // The $parent family of variables refer to the size of the wrapper div.
-=fixed-column($full: 1, $wide: -1, $ipad-landscape: -1, $ipad-portrait: -1, $parent-wide: 19, $parent-full: 19, $parent-ipad-landscape: 18, $parent-ipad-portrait: 13, $full-column: 0, $wide-column: -1, $ipad-landscape-column: -1, $ipad-portrait-column: -1, $subtract: -1)
+=fixed-column($full: 1, $wide: -1, $tablet-landscape: -1, $tablet-portrait: -1, $parent-wide: 19, $parent-full: 19, $parent-tablet-landscape: 18, $parent-tablet-portrait: 13, $full-column: 0, $wide-column: -1, $tablet-landscape-column: -1, $tablet-portrait-column: -1, $subtract: -1)
   box-sizing: content-box
   position: fixed
   left: 50%
@@ -205,21 +205,21 @@ $iphone-landscape-min: 450px
   //   width: grid-width($wide, true)
   //   margin-left: grid-width($wide-column, true) - grid-width($parent-wide, true) / 2
 
-  +ipad-landscape
-    @if $ipad-landscape == -1
-      $ipad-landscape: $full
+  +tablet-landscape
+    @if $tablet-landscape == -1
+      $tablet-landscape: $full
 
-    @if $ipad-landscape-column == -1
-      $ipad-landscape-column: $full-column
+    @if $tablet-landscape-column == -1
+      $tablet-landscape-column: $full-column
 
-    width: grid-width-sub($ipad-landscape, true, $subtract)
-    margin-left: grid-width($ipad-landscape-column, true) - grid-width($parent-ipad-landscape, true) / 2
+    width: grid-width-sub($tablet-landscape, true, $subtract)
+    margin-left: grid-width($tablet-landscape-column, true) - grid-width($parent-tablet-landscape, true) / 2
 
-  +ipad-portrait
-    @if $ipad-portrait == -1
-      $ipad-portrait: $ipad-landscape
-    @if $ipad-portrait-column == -1
-      $ipad-portrait-column: $ipad-landscape-column
+  +tablet-portrait
+    @if $tablet-portrait == -1
+      $tablet-portrait: $tablet-landscape
+    @if $tablet-portrait-column == -1
+      $tablet-portrait-column: $tablet-landscape-column
 
-    width: grid-width-sub($ipad-portrait, true, $subtract)
-    margin-left: grid-width($ipad-portrait-column, true) - grid-width($parent-ipad-portrait, true) / 2
+    width: grid-width-sub($tablet-portrait, true, $subtract)
+    margin-left: grid-width($tablet-portrait-column, true) - grid-width($parent-tablet-portrait, true) / 2
